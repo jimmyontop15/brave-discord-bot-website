@@ -3,276 +3,294 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brave - Your Powerful Discord Companion</title>
+    <title>Brave Bot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #7289da;
-            --secondary-color: #99aab5;
-            --background-color: #000000;
-            --text-color: #ffffff;
-            --accent-color: #ff3e3e;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+        * {
             margin: 0;
             padding: 0;
-            background-color: var(--background-color);
-            color: var(--text-color);
+            box-sizing: border-box;
         }
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-            padding: 0 20px;
+
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-        header {
-            background: #111111;
-            color: var(--text-color);
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
+
+        nav {
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            position: sticky;
             top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 100;
         }
-        header a {
-            color: var(--text-color);
-            text-decoration: none;
-            text-transform: uppercase;
-            font-size: 16px;
-        }
-        header .highlight, header .current a {
-            color: var(--accent-color);
-            font-weight: bold;
-        }
-        header #branding {
-            float: left;
-        }
-        header #branding h1 {
-            margin: 0;
-        }
-        header nav {
-            float: right;
-            margin-top: 10px;
-        }
-        header .highlight {
-            color: var(--accent-color);
-            font-weight: bold;
-        }
-        .button {
-            display: inline-block;
-            font-size: 18px;
-            padding: 12px 24px;
-            background-color: var(--accent-color);
-            color: var(--text-color);
-            text-decoration: none;
-            border-radius: 30px;
-            transition: all 0.3s ease;
+
+        .btn {
+            padding: 0.5rem 1rem;
             border: none;
+            border-radius: 0.5rem;
+            color: white;
+            font-size: 1rem;
             cursor: pointer;
-            text-transform: uppercase;
-            font-weight: bold;
-            letter-spacing: 1px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
         }
-        .button:hover {
-            background-color: #ff6b6b;
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: currentColor;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover::after {
+            transform: scaleX(1);
+        }
+
+        .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(255,62,62,0.3);
+            opacity: 0.9;
         }
-        #showcase {
-            min-height: 400px;
+
+        .btn-discord { background-color: #5865F2; }
+        .btn-intro { background-color: #e67e22; }
+        .btn-add { background-color: #3498db; }
+        .btn-github { background-color: #4a5568; }
+        .btn-purple { background-color: #9b59b6; }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
             text-align: center;
-            color: var(--text-color);
-            padding-top: 150px;
-            background: linear-gradient(45deg, #111111, #2c2c2c);
+            position: relative;
         }
-        #showcase h1 {
-            font-size: 55px;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+
+        main::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(88, 101, 242, 0.1) 0%, transparent 70%);
+            pointer-events: none;
         }
-        #showcase p {
-            font-size: 20px;
-            margin-bottom: 20px;
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            width: 100%;
+            max-width: 1200px;
         }
-        #features {
-            padding: 60px 0;
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 1rem;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s ease;
         }
-        .feature {
-            text-align: center;
-            padding: 30px;
-            background: #111111;
-            margin: 20px 0;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+        .feature-card:hover {
+            transform: translateY(-10px);
         }
-        .feature:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(255,62,62,0.2);
-        }
-        .feature h3 {
-            color: var(--accent-color);
-        }
+
         .feature-icon {
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: var(--accent-color);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
         }
-        #about {
-            background: #111111;
-            padding: 60px 0;
+
+        h1, h2 {
+            font-family: 'Permanent Marker', cursive;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
         }
-        footer {
-            background: #111111;
-            color: var(--text-color);
-            text-align: center;
-            padding: 20px;
-            margin-top: 20px;
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #5865F2, #eb459e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .login-form {
-            background: #111111;
-            padding: 30px;
-            border-radius: 10px;
-            margin-top: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+        h2 {
+            font-size: 4rem;
+            animation-delay: 0.3s;
         }
-        .login-form input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: none;
-            border-radius: 5px;
-            background-color: #2c2c2c;
-            color: var(--text-color);
-        }
-        .login-form button {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--accent-color);
-            color: var(--text-color);
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .login-form button:hover {
-            background-color: #ff6b6b;
-        }
-        @media(max-width: 768px) {
-            header #branding,
-            header nav,
-            header nav li {
-                float: none;
-                text-align: center;
-                width: 100%;
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
-            header {
-                padding-bottom: 20px;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 3rem; }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .github-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .content h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #5865F2;
+        }
+
+        .content p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .content ul {
+            list-style-position: inside;
+            margin-bottom: 1rem;
+        }
+
+        .content li {
+            margin-bottom: 0.5rem;
+        }
+
+        #discord .server-link {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #5865F2;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        #discord .server-link:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div id="branding">
-                <h1><span class="highlight">Brave</span> Bot</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li class="current"><a href="#showcase">Home</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#login">Login</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <section id="showcase">
-        <div class="container">
-            <h1>Welcome to Brave Bot</h1>
-            <p>Your fearless Discord companion for ultimate server control and entertainment!</p>
-            <a href="#" class="button">Add to Discord</a>
-        </div>
-    </section>
-
-    <section id="features">
-        <div class="container">
-            <div class="feature">
-                <div class="feature-icon">🎵</div>
-                <h3>Music Mastery</h3>
-                <p>High-quality music playback with advanced queue management and playlist support.</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">📌</div>
-                <h3>Sticky Messages</h3>
-                <p>Keep important information visible with customizable sticky messages in any channel.</p>
-            </div>
-            <div class="feature">
+    <nav>
+        <button onclick="showSection('discord')" class="btn btn-discord">Discord</button>
+        <button onclick="showSection('introduction')" class="btn btn-intro">Introduction</button>
+        <a href="https://discord.com/oauth2/authorize?client_id=1266684489229275137&permissions=8&integration_type=0&scope=bot+applications.commands" class="btn btn-add">Add Me!</a>
+        <a href="https://github.com/fxwfz" class="btn btn-github">
+            <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            Github
+        </a>
+        <button onclick="showSection('privacy')" class="btn btn-purple">Privacy</button>
+        <button onclick="showSection('terms')" class="btn btn-purple">Terms of Service</button>
+    </nav>
+    <main id="main-content">
+        <h1 class="floating">Welcome To</h1>
+        <h2>Brave Bot</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
                 <div class="feature-icon">🛡️</div>
-                <h3>Anti-Nuke Protection</h3>
-                <p>Advanced security measures to prevent malicious attacks and unauthorized changes to your server.</p>
+                <h3>Anti-Nuke</h3>
+                <p>Advanced protection against server raids and nukes with intelligent threat detection</p>
             </div>
-            <div class="feature">
-                <div class="feature-icon">🤖</div>
-                <h3>Intelligent AutoMod</h3>
-                <p>Automated moderation with customizable rules to keep your server safe and clean.</p>
+            <div class="feature-card">
+                <div class="feature-icon">⚔️</div>
+                <h3>AutoMod</h3>
+                <p>Smart moderation with custom filters and automated actions</p>
             </div>
-        </div>
-    </section>
-
-    <section id="about">
-        <div class="container">
-            <h2>About Brave Bot</h2>
-            <p>Brave Bot is a cutting-edge Discord bot designed to enhance your server experience. With powerful features like music playback, sticky messages, anti-nuke protection, and intelligent automod, Brave Bot is the ultimate tool for server management and entertainment.</p>
-            <p>Join our support server: <a href="https://discord.gg/8XJsX6zV7A" target="_blank">https://discord.gg/KZAvNfbVhZ</a></p>
-        </div>
-    </section>
-
-    <section id="login">
-        <div class="container">
-            <h2>Login</h2>
-            <div class="login-form">
-                <form id="loginForm">
-                    <input type="text" id="username" placeholder="Username" required>
-                    <input type="password" id="password" placeholder="Password" required>
-                    <button type="submit" class="button">Login</button>
-                </form>
+            <div class="feature-card">
+                <div class="feature-icon">🎵</div>
+                <h3>Music</h3>
+                <p>High-quality music playback with premium features</p>
             </div>
         </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2023 Brave Bot. All rights reserved.</p>
-    </footer>
-
+    </main>
+    <div id="discord" class="content">
+        <h3>Join Our Community</h3>
+        <p>Connect with other Brave Bot users, get support, and stay updated with the latest features!</p>
+        <a href="https://discord.gg/Re9efpDp6B" class="server-link" target="_blank">Join Discord Server</a>
+    </div>
+    <div id="introduction" class="content">
+        <h3>Introduction to Brave Bot</h3>
+        <p>Brave Bot is your ultimate Discord companion, designed to enhance your server experience with powerful features and intuitive commands.</p>
+        <p>Key Features:</p>
+        <ul>
+            <li>Advanced Anti-Nuke protection with customizable security levels</li>
+            <li>Intelligent AutoMod with custom filters and automated actions</li>
+            <li>High-quality Music playback with premium features</li>
+            <li>Easy setup and configuration</li>
+        </ul>
+    </div>
+    <div id="privacy" class="content">
+        <h3>Privacy Policy</h3>
+        <p>At Brave Bot, we take your privacy seriously. This policy outlines how we collect, use, and protect your data.</p>
+        <p>We only collect necessary information to provide our services and do not share your personal data with third parties.</p>
+    </div>
+    <div id="terms" class="content">
+        <h3>Terms of Service</h3>
+        <p>By using Brave Bot, you agree to abide by Discord's Terms of Service and our additional terms.</p>
+        <p>Brave Bot is provided "as is" without warranty of any kind. We reserve the right to modify or discontinue the service at any time.</p>
+    </div>
     <script>
-        const clientId = '1266684489229275137';
-        const clientSecret = '3gRsNr7TTHY4noBg3BlDJXfK8g175i0d';
-        const supportServer = 'https://discord.gg/8XJsX6zV7A';
-
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            // This is a mock login function. In a real application, you would send these
-            // credentials to your server to handle authentication securely.
-            mockLogin(username, password);
-        });
-
-        function mockLogin(username, password) {
-            // In a real application, this would be handled securely on your server
-            console.log('Logging in with:', username, password);
-            console.log('Client ID:', clientId);
-            console.log('Client Secret:', clientSecret);
-
-            // Simulate successful login
-            alert('Login successful! You will now be added to the support server.');
-            window.open(supportServer, '_blank');
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content');
+            sections.forEach(section => section.style.display = 'none');
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById(sectionId).style.display = 'block';
         }
     </script>
 </body>
